@@ -471,3 +471,68 @@ button:disabled { cursor: wait; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .weather-particle { display: none; }
 }
+
+/* Vector weather symbols avoid missing-glyph squares from system emoji fonts. */
+.weather-main-icon, .air-main-icon { display: inline-flex; align-items: center; justify-content: center; }
+.weather-main-icon svg { color: #f4e6c5; filter: drop-shadow(0 5px 12px rgba(20,31,43,.16)); }
+.air-main-icon svg { color: #536f66; }
+.weather-particle svg { color: rgba(72,91,105,.56); stroke-width: 1.55; }
+
+
+/* Full-screen loading state used for the first fetch and every city refresh. */
+.loading-screen {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(25, 35, 47, .34);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: loading-fade-in .2s ease-out;
+}
+.loading-panel {
+  display: flex;
+  width: min(100%, 300px);
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 30px 26px 27px;
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: 24px;
+  background: rgba(242, 241, 237, .96);
+  box-shadow: 0 24px 70px rgba(18, 29, 41, .24);
+  color: #29394a;
+  text-align: center;
+}
+.loading-mark {
+  display: grid;
+  width: 62px;
+  height: 62px;
+  place-items: center;
+  border-radius: 20px;
+  background: #dce3e5;
+  color: #526a80;
+}
+.loading-spinner {
+  width: 25px;
+  height: 25px;
+  margin: 3px 0;
+  border: 3px solid rgba(82, 106, 128, .2);
+  border-top-color: #526a80;
+  border-radius: 50%;
+  animation: loading-spin .8s linear infinite;
+}
+.loading-panel strong { font-size: 1rem; font-weight: 750; }
+.loading-caption { color: #647180; font-size: .78rem; }
+@keyframes loading-spin { to { transform: rotate(360deg); } }
+@keyframes loading-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.weather-main-icon svg { stroke-width: 1.55; }
+.weather-main-icon svg.lucide-cloudy { color: #dce6ef; }
+.weather-particle svg { width: 32px; height: 32px; }
+@media (prefers-reduced-motion: reduce) {
+  .loading-spinner { animation: none; }
+  .loading-screen { animation: none; }
+}

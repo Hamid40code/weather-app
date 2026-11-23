@@ -1,7 +1,9 @@
 import type { CSSProperties } from 'react'
+import WeatherIcon from './WeatherIcon'
+import type { WeatherIconName } from '../lib/weather'
 
 interface WeatherBackgroundProps {
-  icons: string[]
+  icons: WeatherIconName[]
 }
 
 const positions = [
@@ -34,7 +36,7 @@ export default function WeatherBackground({ icons }: WeatherBackgroundProps) {
             '--sway': position.sway,
           } as CSSProperties}
         >
-          {icons[index % icons.length] ?? '☁️'}
+          <WeatherIcon name={icons[index % icons.length] ?? 'cloud'} size={30} />
         </span>
       ))}
     </div>

@@ -148,42 +148,40 @@ export function getAirQualityLevel(value: number): AirQualityLevel {
   return 'Extremely poor'
 }
 
-export function getAirEmoji(level: AirQualityDay['level']): string {
+export type AirQualityIcon = 'leaf' | 'smile' | 'meh' | 'cloud-fog' | 'shield-alert'
+
+export function getAirIcon(level: AirQualityDay['level']): AirQualityIcon {
   switch (level) {
-    case 'Good':
-      return '🌿'
-    case 'Fair':
-      return '🙂'
-    case 'Moderate':
-      return '😐'
-    case 'Poor':
-      return '🌫️'
+    case 'Good': return 'leaf'
+    case 'Fair': return 'smile'
+    case 'Moderate': return 'meh'
+    case 'Poor': return 'cloud-fog'
     case 'Very poor':
-      return '😷'
-    case 'Extremely poor':
-      return '🫧'
-    default:
-      return '🍃'
+    case 'Extremely poor': return 'shield-alert'
+    default: return 'leaf'
   }
 }
 
-export function getWeatherDescription(code: number): { label: string; emoji: string; particles: string[] } {
-  if (code === 0) return { label: 'Clear sky', emoji: '☀️', particles: ['☀️', '✨', '🌤️', '☁️'] }
-  if (code === 1) return { label: 'Mainly clear', emoji: '🌤️', particles: ['🌤️', '☀️', '☁️', '✨'] }
-  if (code === 2) return { label: 'Partly cloudy', emoji: '⛅', particles: ['⛅', '☁️', '🌤️', '✨'] }
-  if (code === 3) return { label: 'Overcast', emoji: '☁️', particles: ['☁️', '🌥️', '☁️', '💨'] }
-  if (code === 45 || code === 48) return { label: 'Foggy', emoji: '🌫️', particles: ['🌫️', '☁️', '💨', '🌥️'] }
-  if ([51, 53, 55, 56, 57].includes(code)) return { label: 'Drizzle', emoji: '🌦️', particles: ['🌦️', '💧', '☁️', '🌧️'] }
-  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return { label: 'Rainy', emoji: '🌧️', particles: ['🌧️', '💧', '☁️', '🌦️'] }
-  if ([71, 73, 75, 77, 85, 86].includes(code)) return { label: 'Snowy', emoji: '❄️', particles: ['❄️', '🌨️', '☁️', '✨'] }
-  if ([95, 96, 99].includes(code)) return { label: 'Thunderstorm', emoji: '⛈️', particles: ['⛈️', '🌧️', '⚡', '☁️'] }
-  return { label: 'Changing conditions', emoji: '🌤️', particles: ['🌤️', '☁️', '✨', '💨'] }
+export type WeatherIconName = 'sun' | 'cloud-sun' | 'cloud' | 'cloudy' | 'cloud-fog' | 'cloud-drizzle' | 'cloud-rain' | 'cloud-snow' | 'cloud-lightning' | 'moon' | 'sparkles' | 'wind'
+interface WeatherDescription { label: string; icon: WeatherIconName; particles: WeatherIconName[] }
+
+export function getWeatherDescription(code: number): WeatherDescription {
+  if (code === 0) return { label: 'Clear sky', icon: 'sun', particles: ['sun', 'sparkles', 'cloud-sun', 'cloud'] }
+  if (code === 1) return { label: 'Mainly clear', icon: 'cloud-sun', particles: ['cloud-sun', 'sun', 'cloud', 'sparkles'] }
+  if (code === 2) return { label: 'Partly cloudy', icon: 'cloud-sun', particles: ['cloud-sun', 'cloud', 'sun', 'sparkles'] }
+  if (code === 3) return { label: 'Overcast', icon: 'cloudy', particles: ['cloudy', 'cloud', 'cloudy', 'wind'] }
+  if (code === 45 || code === 48) return { label: 'Foggy', icon: 'cloud-fog', particles: ['cloud-fog', 'cloud', 'wind', 'cloud'] }
+  if ([51, 53, 55, 56, 57].includes(code)) return { label: 'Drizzle', icon: 'cloud-drizzle', particles: ['cloud-drizzle', 'cloud-rain', 'cloud', 'cloud-fog'] }
+  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return { label: 'Rainy', icon: 'cloud-rain', particles: ['cloud-rain', 'cloud', 'cloud-drizzle', 'wind'] }
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return { label: 'Snowy', icon: 'cloud-snow', particles: ['cloud-snow', 'snowflake', 'cloud-snow', 'sparkles'] }
+  if ([95, 96, 99].includes(code)) return { label: 'Thunderstorm', icon: 'cloud-lightning', particles: ['cloud-lightning', 'cloud-rain', 'wind', 'cloud'] }
+  return { label: 'Changing conditions', icon: 'cloud-sun', particles: ['cloud-sun', 'cloud', 'sparkles', 'wind'] }
 }
 
-export function getWeatherDetails(current: CurrentWeather) {
+export function getWeatherDetails(current: CurrentWeather): WeatherDescription {
   const description = getWeatherDescription(current.weather_code)
   if (current.is_day === 0 && current.weather_code === 0) {
-    return { ...description, emoji: '🌙', label: 'Clear night', particles: ['🌙', '✨', '☁️', '⭐'] }
+    return { ...description, icon: 'moon', label: 'Clear night', particles: ['moon', 'sparkles', 'cloud', 'sparkles'] }
   }
   return description
 }

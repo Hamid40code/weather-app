@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react'
 import { ArrowDownRight, ArrowUpRight, Droplets, MapPin, Search, Wind } from 'lucide-react'
 import WeatherBackground from './components/WeatherBackground'
+import WeatherIcon from './components/WeatherIcon'
 import {
   findCity,
   formatLocation,
-  getAirEmoji,
+  getAirIcon,
   getCityWeather,
   getContinent,
   getTemperature,
@@ -27,7 +28,7 @@ function App() {
   const continent: Continent = city ? getContinent(city.country_code, city.longitude) : 'asia'
   const weatherDetails = weather ? getWeatherDetails(weather.current) : null
   const backgroundIcons = useMemo(
-    () => weatherDetails?.particles ?? ['☀️', '☁️', '🌦️', '✨'],
+    () => weatherDetails?.particles ?? ['sun', 'cloud', 'cloud-rain', 'sparkles'],
     [weatherDetails],
   )
 
@@ -73,6 +74,16 @@ function App() {
   return (
     <main className={`app-shell relative isolate min-h-screen continent-${continent}`}>
       <WeatherBackground icons={backgroundIcons} />
+      {status === 'loading' && (
+        <div className="loading-screen" role="status" aria-live="polite" aria-label="Loading weather">
+          <div className="loading-panel">
+            <span className="loading-mark"><WeatherIcon name="cloud-sun" size={34} /></span>
+            <span className="loading-spinner" aria-hidden="true" />
+            <strong>{weather ? 'Updating the forecast' : 'Finding your weather'}</strong>
+            <span className="loading-caption">Checking the sky for {query.trim() || 'your city'}…</span>
+          </div>
+        </div>
+      )}
       <div className="page-wrap flex min-h-screen flex-col">
         <header className="topbar flex items-center justify-between">
           <a className="brand" href="#top" aria-label="Atmos home">
@@ -112,8 +123,8 @@ function App() {
             {status === 'error' && <p className="error-message" role="alert">{error}</p>}
 
             <div className="weather-main">
-              <div className={`weather-icon-orb ${status === 'loading' ? 'is-loading' : ''}`}>
-                <span>{weatherDetails?.emoji ?? '🌤️'}</span>
+              <div className="weather-icon-orb">
+                <span className="weather-main-icon"><WeatherIcon name={weatherDetails?.icon ?? 'cloud-sun'} size={76} /></span>
               </div>
               <div className="weather-heading">
                 <p className="location-label">CURRENT WEATHER</p>
@@ -146,7 +157,7 @@ function App() {
               />
               <div className="stat-divider" />
               <WeatherStat
-                icon={<span className="sun-symbol">☼</span>}
+                icon={<WeatherIcon name="sun" size={16} />}
                 label="Local time"
                 value={updatedTime ?? '—'}
               />
@@ -165,7 +176,7 @@ function App() {
             </div>
             <div className="air-orb-wrap">
               <div className="air-orb">
-                <span>{getAirEmoji(weather?.todayAir.level ?? 'Unavailable')}</span>
+                <span className="air-main-icon"><WeatherIcon name={getAirIcon(weather?.todayAir.level ?? 'Unavailable')} size={34} /></span>
               </div>
               <span className="air-orb-label">{weather?.todayAir.level ?? 'Loading'}</span>
               <span className="aqi-caption">EUROPEAN AQI</span>
@@ -180,7 +191,7 @@ function App() {
 
         <footer className="page-footer">
           <span>Take a moment. Look up.</span>
-          <span>Designed for wherever you are <span aria-hidden="true">✳</span></span>
+          <span>Designed for wherever you are <WeatherIcon name="sparkles" size={14} /></span>
         </footer>
       </div>
     </main>

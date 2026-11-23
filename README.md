@@ -79,3 +79,10 @@ weather-app/
 5. If GitHub asks you to authenticate, complete the browser sign-in or use your configured Git Credential Manager / SSH key. Never put a password or personal access token directly in the script.
 
 The script initializes Git if needed, checks whether an `origin` remote exists before querying it, adds `origin` when it is missing, uses the `main` branch, stages the project while respecting `.gitignore`, creates a commit when there are changes, and pushes to `origin`. It never force-pushes. If the remote repository already has its own commits, resolve that history mismatch before retrying.
+
+
+## Recent UI improvements
+
+- Added a full-screen, accessible loading state during the initial weather request and every city search/refresh.
+- Expanded weather condition illustrations with clearer vector symbols, including a fuller overcast-cloud icon and a cloud-with-snow symbol.
+- Weather icons remain SVG-based, avoiding platform-dependent emoji font rendering.
