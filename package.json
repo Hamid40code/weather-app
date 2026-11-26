@@ -1,5 +1,6 @@
 {
   "name": "weather-app",
+  "homepage": "https://hamid40code.github.io/weather-app",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -7,9 +8,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -b --pretty"
+    "typecheck": "tsc -b --pretty",
+    "predeploy": "npm run build",
+    "deploy" : ""
   },
   "dependencies": {
+    "gh-pages": "^6.3.0",
     "lucide-react": "^0.577.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
