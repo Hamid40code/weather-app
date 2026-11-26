@@ -162,7 +162,7 @@ export function getAirIcon(level: AirQualityDay['level']): AirQualityIcon {
   }
 }
 
-export type WeatherIconName = 'sun' | 'cloud-sun' | 'cloud' | 'cloudy' | 'cloud-fog' | 'cloud-drizzle' | 'cloud-rain' | 'cloud-snow' | 'cloud-lightning' | 'moon' | 'sparkles' | 'wind'
+export type WeatherIconName = 'sun' | 'cloud-sun' | 'cloud' | 'cloudy' | 'cloud-fog' | 'cloud-drizzle' | 'cloud-rain' | 'cloud-snow' | 'cloud-lightning' | 'snowflake' | 'moon' | 'sparkles' | 'wind'
 interface WeatherDescription { label: string; icon: WeatherIconName; particles: WeatherIconName[] }
 
 export function getWeatherDescription(code: number): WeatherDescription {

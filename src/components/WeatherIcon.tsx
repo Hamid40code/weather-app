@@ -14,6 +14,7 @@ const weatherIcons = {
   'cloud-rain': CloudRain,
   'cloud-snow': CloudSnow,
   'cloud-lightning': CloudLightning,
+  snowflake: Snowflake,
   moon: Moon,
   sparkles: Sparkles,
   wind: Wind,

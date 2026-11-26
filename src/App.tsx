@@ -12,6 +12,7 @@ import {
   getWeatherDetails,
 } from './lib/weather'
 import type { AirQualityDay, Continent, GeoLocation } from './types/weather'
+import type { WeatherIconName } from './lib/weather'
 
 type WeatherData = Awaited<ReturnType<typeof getCityWeather>>
 type SearchStatus = 'idle' | 'loading' | 'error'
@@ -27,7 +28,7 @@ function App() {
 
   const continent: Continent = city ? getContinent(city.country_code, city.longitude) : 'asia'
   const weatherDetails = weather ? getWeatherDetails(weather.current) : null
-  const backgroundIcons = useMemo(
+  const backgroundIcons = useMemo<WeatherIconName[]>(
     () => weatherDetails?.particles ?? ['sun', 'cloud', 'cloud-rain', 'sparkles'],
     [weatherDetails],
   )
